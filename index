@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Briar U Universe — Family Tree &amp; Timeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0e1b2c;
+    --ink-2:#16263c;
+    --cream:#f3ede0;
+    --cream-2:#e9e0cc;
+    --gold:#c9a24b;
+    --gold-2:#e4c877;
+    --maroon:#7c2c2c;
+    --maroon-2:#9c3d3d;
+    --ice:#8fb8c9;
+    --line: rgba(243,237,224,0.16);
+    --shadow: 0 18px 40px rgba(0,0,0,0.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, #1a2c46 0%, transparent 60%),
+      radial-gradient(1000px 600px at 110% 10%, #24140f 0%, transparent 55%),
+      var(--ink);
+    color:var(--cream);
+    font-family:'Public Sans', sans-serif;
+    min-height:100vh;
+  }
+  ::selection{ background:var(--gold); color:var(--ink); }
+
+  /* ---------- Header ---------- */
+  header{
+    padding:56px 6vw 28px;
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:'Public Sans',sans-serif;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--gold-2);
+    font-weight:700;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:26px; height:1px; background:var(--gold-2);
+    display:inline-block;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(2.2rem, 5vw, 4rem);
+    margin:14px 0 10px;
+    letter-spacing:-0.01em;
+    line-height:1.02;
+  }
+  h1 em{ font-style:italic; color:var(--gold-2); font-weight:500;}
+  header p.sub{
+    max-width:640px;
+    color:#cfd7e2;
+    font-size:15.5px;
+    line-height:1.6;
+    margin:0 0 6px;
+  }
+  .crest-row{
+    position:absolute; right:6vw; top:50px;
+    display:flex; gap:10px;
+  }
+  .crest{
+    width:54px;height:54px;border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces',serif; font-weight:600; font-size:12px;
+    color:var(--gold-2);
+    background:rgba(124,44,44,0.18);
+  }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    position:sticky; top:0; z-index:50;
+    display:flex; gap:2px; flex-wrap:wrap; align-items:center;
+    padding:14px 6vw;
+    background:rgba(14,27,44,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .search-wrap{ margin-left:auto; position:relative; }
+  #global-search{
+    font-family:'Public Sans',sans-serif; font-size:13px;
+    background:rgba(243,237,224,0.06); border:1px solid var(--line);
+    color:var(--cream); border-radius:999px; padding:9px 16px 9px 34px;
+    width:190px; transition:.2s ease;
+  }
+  #global-search:focus{ outline:none; border-color:var(--gold-2); width:230px; background:rgba(243,237,224,0.1); }
+  #global-search::placeholder{ color:#8590a3; }
+  .search-wrap::before{
+    content:"⌕"; position:absolute; left:13px; top:50%; transform:translateY(-50%);
+    color:#8590a3; font-size:14px; pointer-events:none;
+  }
+  .spoiler-toggle{
+    display:flex; align-items:center; gap:7px; margin-left:14px;
+    font-size:12px; color:#b9c3d2; cursor:pointer; user-select:none;
+  }
+  .spoiler-toggle input{ accent-color:var(--gold-2); cursor:pointer; width:14px; height:14px;}
+
+  /* spoiler blur — applied to next-gen (Campus Diaries) content */
+  body.hide-spoilers .card.gen2,
+  body.hide-spoilers .bubble.nextgen,
+  body.hide-spoilers .node.gen2,
+  body.hide-spoilers .book.gen2,
+  body.hide-spoilers .tl-era.gen2{
+    filter: blur(6px);
+    transition: filter .18s ease;
+  }
+  body.hide-spoilers .card.gen2:hover,
+  body.hide-spoilers .bubble.nextgen:hover,
+  body.hide-spoilers .node.gen2:hover,
+  body.hide-spoilers .book.gen2:hover,
+  body.hide-spoilers .tl-era.gen2:hover{
+    filter: blur(0);
+  }
+  nav.tabs button{
+    font-family:'Public Sans',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    letter-spacing:.02em;
+    color:#b9c3d2;
+    background:transparent;
+    border:1px solid transparent;
+    padding:9px 16px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:.18s ease;
+  }
+  nav.tabs button:hover{ color:var(--cream); border-color:var(--line);}
+  nav.tabs button.active{
+    color:var(--ink);
+    background:var(--gold-2);
+    border-color:var(--gold-2);
+  }
+  nav.tabs button:focus-visible{ outline:2px solid var(--ice); outline-offset:2px; }
+
+  main{ padding:40px 6vw 100px; max-width:1400px; margin:0 auto; }
+  section.view{ display:none; animation:fade .35s ease; }
+  section.view.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  .view-head{ margin-bottom:30px; max-width:720px; }
+  .view-head h2{
+    font-family:'Fraunces',serif; font-weight:600; font-size:clamp(1.6rem,3vw,2.3rem);
+    margin:0 0 8px;
+  }
+  .view-head p{ color:#c3cddb; font-size:14.5px; line-height:1.6; margin:0;}
+
+  /* ---------- Legend ---------- */
+  .legend{ display:flex; gap:18px; flex-wrap:wrap; margin:18px 0 6px; font-size:12.5px; color:#b9c3d2;}
+  .legend span{ display:inline-flex; align-items:center; gap:7px;}
+  .swatch{ width:13px; height:13px; border-radius:3px; display:inline-block;}
+
+  /* ============ FAMILY TREES ============ */
+  .family-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:34px; }
+  .family-block{
+    background:linear-gradient(180deg, rgba(233,224,204,0.04), rgba(233,224,204,0.01));
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:26px 22px 30px;
+  }
+  .family-name{
+    font-family:'Fraunces',serif; font-size:1.15rem; font-weight:600;
+    color:var(--gold-2); margin:0 0 4px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .family-name small{ font-family:'Public Sans',sans-serif; font-weight:500; font-size:11px; color:#8a95a8; }
+
+  .tree{ margin-top:20px; }
+  .gen0{
+    text-align:center; padding:10px 12px; border:1px dashed var(--line);
+    border-radius:10px; font-size:12.5px; color:#9fa9ba; margin-bottom:4px;
+  }
+  .trunk{ width:1px; height:20px; background:var(--line); margin:0 auto; }
+  .couple-row{ display:flex; align-items:stretch; justify-content:center; gap:0; }
+  .card{
+    background:var(--cream);
+    color:var(--ink);
+    border-radius:10px;
+    padding:12px 14px;
+    min-width:150px;
+    box-shadow:var(--shadow);
+    position:relative;
+    border-left:4px solid var(--maroon-2);
+  }
+  .card.protag{ border-left-color:var(--gold); }
+  .card .nm{ font-family:'Fraunces',serif; font-weight:600; font-size:14.5px; line-height:1.15; }
+  .card .role{ font-size:10.5px; color:#6b5f47; text-transform:uppercase; letter-spacing:.04em; margin-top:3px;}
+  .card .bio{ font-size:11px; color:#5c5646; font-style:italic; line-height:1.4; margin-top:6px; max-width:190px; }
+  .card .bk{
+    display:inline-block; margin-top:7px; font-size:10.5px; font-weight:700;
+    background:var(--maroon); color:var(--cream-2); padding:3px 8px; border-radius:5px;
+  }
+  .card .tbd{
+    display:inline-block; margin-top:7px; font-size:9.5px; font-weight:700;
+    letter-spacing:.03em; text-transform:uppercase;
+    background:transparent; color:#8a8060; padding:3px 8px; border-radius:5px;
+    border:1px dashed #b5a97e;
+  }
+  .card{ cursor:pointer; transition:opacity .18s ease, box-shadow .18s ease; }
+  .card.dim{ opacity:.22; }
+  .card.lit{ box-shadow:0 0 0 2px var(--gold-2), var(--shadow); }
+  .bubble{ transition:opacity .18s ease, box-shadow .18s ease; }
+  .bubble.dim{ opacity:.2; }
+  .bubble.lit{ box-shadow:0 0 0 2px var(--gold-2), var(--shadow); }
+  .card .offbriar, .agebadge + .offbriar-inline{
+    display:inline-block; margin-top:7px; font-size:9.5px; font-weight:700;
+    letter-spacing:.03em; text-transform:uppercase;
+    background:repeating-linear-gradient(135deg, #5b5142, #5b5142 4px, #6b6047 4px, #6b6047 8px);
+    color:#f0e9d8; padding:3px 8px; border-radius:5px;
+  }
+  .ring{
+    align-self:center; padding:0 10px; color:var(--gold-2); font-size:16px;
+  }
+  .children-wrap{ display:flex; flex-direction:column; align-items:center; }
+  .children{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:0; position:relative; padding-top:18px;}
+  .children::before{
+    content:""; position:absolute; top:0; left:50%; width:1px; height:18px;
+    background:var(--line); transform:translateX(-50%);
+  }
+  .child{ display:flex; flex-direction:column; align-items:center; }
+  .child .branch{ width:1px; height:14px; background:var(--line);}
+
+  /* ============ FRIEND GROUPS ============ */
+  .friend-groups{ display:flex; flex-direction:column; gap:48px; }
+  .fg{
+    border:1px solid var(--line); border-radius:16px; padding:30px 26px;
+    background:linear-gradient(180deg, rgba(124,44,44,0.08), rgba(124,44,44,0.01));
+  }
+  .fg-title{ display:flex; align-items:baseline; gap:12px; margin-bottom:6px; flex-wrap:wrap;}
+  .fg-title h3{ font-family:'Fraunces',serif; font-size:1.3rem; margin:0; color:var(--gold-2); font-weight:600;}
+  .fg-title span{ font-size:12px; color:#9aa5b6; }
+  .fg-note{ font-size:13.5px; color:#c3cddb; max-width:640px; margin:6px 0 20px; line-height:1.55;}
+  .cluster{ display:flex; flex-wrap:wrap; gap:14px; }
+  .bubble{
+    background:var(--cream); color:var(--ink); border-radius:999px;
+    padding:9px 16px; font-size:13px; font-weight:600; font-family:'Public Sans',sans-serif;
+    box-shadow:var(--shadow); position:relative; cursor:default;
+    border:1.5px solid transparent;
+  }
+  .bubble.hockey{ border-color:var(--maroon-2); }
+  .bubble.girls{ border-color:var(--ice); }
+  .bubble.nextgen{ border-color:var(--gold); }
+  .bubble small{ display:block; font-weight:500; font-size:10.5px; color:#6b6250; margin-top:2px;}
+  .link-note{
+    font-size:12.5px; color:#a9b3c4; margin-top:16px; padding-top:14px;
+    border-top:1px dashed var(--line); line-height:1.7;
+  }
+  .link-note b{ color:var(--gold-2); font-weight:700; }
+
+  /* ============ CONNECTIONS MAP ============ */
+  .map-scroll{
+    overflow-x:auto; overflow-y:hidden;
+    border:1px solid var(--line); border-radius:16px;
+    background:linear-gradient(180deg, rgba(233,224,204,0.03), rgba(233,224,204,0.01));
+    padding:10px;
+  }
+  .map-canvas{ position:relative; width:2260px; height:980px; }
+  #map-svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .node{
+    position:absolute; transform:translate(-50%,-50%);
+    background:var(--cream); color:var(--ink); border-radius:9px;
+    padding:7px 11px; min-width:108px; max-width:150px; text-align:center;
+    box-shadow:var(--shadow); cursor:pointer; z-index:2;
+    border:2px solid transparent;
+    transition:.15s ease;
+  }
+  .node .n-name{ font-family:'Fraunces',serif; font-weight:600; font-size:12.5px; line-height:1.15;}
+  .node .n-book{ font-size:8.5px; color:#7a7259; margin-top:2px; text-transform:uppercase; letter-spacing:.03em;}
+  .node.gen0{ background:transparent; border:1px dashed var(--line); color:#b9c3d2; box-shadow:none; padding:5px 10px;}
+  .node.gen0 .n-name{ font-size:11px; font-weight:600; color:#b9c3d2;}
+  .node.notbriar{
+    background:repeating-linear-gradient(135deg, #5b5142, #5b5142 4px, #6b6047 4px, #6b6047 8px);
+    color:#f0e9d8;
+  }
+  .node.notbriar .n-name{ color:#f0e9d8; }
+  .node.notbriar .n-flag{ font-size:8.5px; color:#f0e9d8; opacity:.85; text-transform:uppercase; letter-spacing:.03em; margin-top:2px; font-weight:700;}
+  .node.dim{ opacity:.18; }
+  .node.lit{ border-color:var(--gold-2); z-index:3; }
+  .edge{ transition:.15s ease; }
+  .edge.dim{ opacity:.06; }
+  .edge.lit{ opacity:1 !important; stroke-width:3.2 !important; }
+
+  /* ============ BOOK GUIDE ============ */
+  .series-block{ margin-bottom:46px; }
+  .series-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:18px; flex-wrap:wrap;}
+  .series-head h3{ font-family:'Fraunces',serif; font-size:1.5rem; margin:0; font-weight:600;}
+  .series-head .tag{
+    font-size:11px; letter-spacing:.06em; text-transform:uppercase; font-weight:700;
+    color:var(--ink); background:var(--ice); padding:4px 10px; border-radius:6px;
+  }
+  .series-head p{ width:100%; color:#c3cddb; font-size:13.5px; margin:2px 0 0; max-width:680px; line-height:1.55;}
+  .book-row{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+  .book{
+    background:var(--cream); color:var(--ink); border-radius:12px; padding:16px 16px 18px;
+    box-shadow:var(--shadow); display:flex; flex-direction:column; gap:6px;
+    border-top:5px solid var(--gold);
+  }
+  .book.upcoming{ opacity:.72; border-top-color:#9aa5b6; border-style:dashed; border-top-width:3px;}
+  .book .num{ font-size:11px; font-weight:700; color:var(--maroon); letter-spacing:.05em;}
+  .book .title{ font-family:'Fraunces',serif; font-weight:600; font-size:16.5px; line-height:1.2;}
+  .book .couple{ font-size:12.5px; color:#4a4232; font-weight:600;}
+  .book .yr{ font-size:11px; color:#7a7259; margin-top:auto; padding-top:6px;}
+
+  /* ============ TIMELINE ============ */
+  .timeline-wrap{ position:relative; padding-left:26px; }
+  .timeline-wrap::before{
+    content:""; position:absolute; left:6px; top:6px; bottom:6px; width:2px;
+    background:linear-gradient(var(--gold), var(--maroon-2), var(--ice));
+  }
+  .tl-era{ margin-bottom:44px; position:relative; }
+  .tl-dot{
+    position:absolute; left:-26px; top:4px; width:14px; height:14px; border-radius:50%;
+    background:var(--gold-2); border:3px solid var(--ink);
+  }
+  .tl-era h3{ font-family:'Fraunces',serif; font-size:1.3rem; margin:0 0 4px; color:var(--gold-2);}
+  .tl-era .when{ font-size:12px; color:#9aa5b6; margin-bottom:14px;}
+  .tl-books{ display:flex; flex-direction:column; gap:10px; }
+  .tl-book{
+    display:flex; align-items:center; gap:14px; background:rgba(243,237,224,0.05);
+    border:1px solid var(--line); border-radius:10px; padding:10px 16px;
+  }
+  .tl-book .idx{ font-family:'Fraunces',serif; font-weight:600; color:var(--maroon-2); font-size:15px; width:22px;}
+  .tl-book .info b{ font-size:14px; }
+  .tl-book .info span{ display:block; font-size:12px; color:#a9b3c4; margin-top:2px;}
+
+  footer{
+    text-align:center; padding:30px; font-size:11.5px; color:#6d7688;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:640px){
+    .crest-row{ display:none; }
+    header{ padding:40px 5vw 22px;}
+    main{ padding:30px 5vw 80px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="crest-row"><div class="crest">BU</div></div>
+  <div class="eyebrow">Off&#8209;Campus &middot; Briar U &middot; Campus Diaries</div>
+  <h1>The <em>Briar University</em><br>Universe, Mapped</h1>
+  <p class="sub">A fan reference tracing three generations of hockey players, their families, their friend groups, and which Elle Kennedy book each one belongs to &mdash; built from the series' own published family tree plus book synopses.</p>
+</header>
+
+<nav class="tabs">
+  <button data-view="families" class="active">Family Trees</button>
+  <button data-view="friends">Friend Groups</button>
+  <button data-view="map">Connections Map</button>
+  <button data-view="books">Book Guide</button>
+  <button data-view="timeline">Timeline</button>
+  <div class="search-wrap">
+    <input type="text" id="global-search" placeholder="Find a character…" autocomplete="off">
+  </div>
+  <label class="spoiler-toggle">
+    <input type="checkbox" id="spoiler-toggle">
+    Hide Campus Diaries spoilers
+  </label>
+</nav>
+
+<main>
+
+  <!-- ======================= FAMILIES ======================= -->
+  <section class="view active" id="families">
+    <div class="view-head">
+      <h2>Four Families, Three Generations</h2>
+      <p>Gold-edged cards are book protagonists; maroon-edged cards are family members who haven't (yet) led their own book. Lines trace parent &rarr; child.</p>
+    </div>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--gold)"></i> Book protagonist</span>
+      <span><i class="swatch" style="background:var(--maroon-2)"></i> Family / supporting character</span>
+    </div>
+
+    <div class="family-grid">
+
+      <!-- GRAHAM -->
+      <div class="family-block">
+        <p class="family-name">The Grahams <small>Off-Campus &rarr; Campus Diaries</small></p>
+        <div class="tree">
+          <div class="gen0">Phil Graham &amp; Mrs. Graham</div>
+          <div class="trunk"></div>
+          <div class="couple-row">
+            <div data-id="garrett" class="card protag"><div class="nm">Garrett Graham</div><div class="role">Hockey captain</div><div class="bio">Hockey captain who fake-dates a shy music major to make an ex jealous &mdash; and falls for real.</div><span class="bk">THE DEAL</span></div>
+            <div class="ring">&#8734;</div>
+            <div data-id="hannah" class="card protag"><div class="nm">Hannah Wells</div><div class="role">Music major</div><div class="bio">Quiet music major who strikes a deal: tutoring lessons for a fake relationship.</div><span class="bk">THE DEAL</span></div>
+          </div>
+          <div class="children-wrap">
+            <div class="children">
+              <div class="child">
+                <div class="branch"></div>
+                <div data-id="wyatt" class="card protag gen2"><div class="nm">Wyatt Graham</div><div class="role">Son &middot; hockey</div><div class="bio">Garrett &amp; Hannah's son &mdash; a musician at heart, raised in a house full of hockey.</div><span class="bk">LOVE SONG</span></div>
+              </div>
+              <div class="child">
+                <div class="branch"></div>
+                <div data-id="gigi" class="card protag gen2"><div class="nm">Gigi Graham</div><div class="role">Daughter</div><div class="bio">Garrett &amp; Hannah's daughter, following her dad onto the ice as team manager.</div><span class="bk">GRAHAM EFFECT</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:6px;font-size:12px;color:#9aa5b6;">Gigi marries <b style="color:var(--gold-2)">Luke Ryder</b> (co-captain, her love interest in <i>The Graham Effect</i>)</div>
+        </div>
+      </div>
+
+      <!-- LOGAN -->
+      <div class="family-block">
+        <p class="family-name">The Logans <small>Off-Campus &rarr; Campus Diaries</small></p>
+        <div class="tree">
+          <div class="gen0">Ward Logan &amp; Jean Logan</div>
+          <div class="trunk"></div>
+          <div class="children-wrap">
+            <div class="children" style="padding-top:0;">
+              <div class="child">
+                <div data-id="jeffrey" class="card"><div class="nm">Jeffrey Logan</div><div class="role">Married Kylie</div><span class="tbd">No book yet</span></div>
+              </div>
+              <div class="child">
+                <div class="couple-row">
+                  <div data-id="logan" class="card protag"><div class="nm">John "Logan" Logan</div><div class="role">Hockey player</div><div class="bio">Garrett's best friend and teammate, carrying a bad reputation and a soft spot he won't admit to.</div><span class="bk">THE MISTAKE</span></div>
+                  <div class="ring">&#8734;</div>
+                  <div data-id="grace" class="card protag"><div class="nm">Grace Ivers</div><div class="role">Photographer</div><div class="bio">Aspiring photographer who's sworn off hockey players &mdash; until Logan won't take no for an answer.</div><span class="bk">THE MISTAKE</span></div>
+                </div>
+                <div class="children" style="margin-top:14px;">
+                  <div class="child">
+                    <div class="branch"></div>
+                    <div data-id="blake" class="card protag gen2"><div class="nm">Blake Logan</div><div class="role">Son &middot; hockey</div><div class="bio">Logan &amp; Grace's son, Wyatt's best friend and eventually something more.</div><span class="bk">LOVE SONG</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:6px;font-size:12px;color:#9aa5b6;">Blake Logan &amp; Wyatt Graham are the co-leads of <b style="color:var(--gold-2)">Love Song</b></div>
+        </div>
+      </div>
+
+      <!-- DI LAURENTIS -->
+      <div class="family-block" style="grid-column:span 1;">
+        <p class="family-name">The Di Laurentis' <small>Off-Campus &rarr; Briar U &rarr; Campus Diaries</small></p>
+        <div class="tree">
+          <div class="gen0">Peter Di Laurentis &amp; Lori Heyward</div>
+          <div class="trunk"></div>
+          <div class="children-wrap">
+            <div class="children" style="padding-top:0; align-items:flex-start;">
+              <div class="child">
+                <div data-id="nick" class="card"><div class="nm">Nick Heyward-Di Laurentis</div><div class="role">Sibling</div><span class="tbd">No book yet</span></div>
+              </div>
+              <div class="child">
+                <div class="couple-row">
+                  <div data-id="dean" class="card protag"><div class="nm">Dean Heyward-Di Laurentis</div><div class="role">Hockey player</div><div class="bio">Broody team captain hiding a stutter, paired with a tutor who's his exact opposite.</div><span class="bk">THE SCORE</span></div>
+                  <div class="ring">&#8734;</div>
+                  <div data-id="allie" class="card protag"><div class="nm">Allie Hayes</div><div class="role">Aspiring actress</div><div class="bio">Bubbly aspiring actress who becomes Dean's unlikely roommate, then something more.</div><span class="bk">THE SCORE</span></div>
+                </div>
+                <div class="children" style="margin-top:14px;">
+                  <div class="child"><div class="branch"></div><div data-id="beau" class="card gen2"><div class="nm">Beau Di Laurentis</div><div class="role">Son &middot; hockey</div><span class="tbd">No book yet</span></div></div>
+                  <div class="child"><div class="branch"></div><div data-id="ivy" class="card protag gen2"><div class="nm">Ivy Di Laurentis</div><div class="role">Daughter &middot; ballet</div><div class="bio">Dean &amp; Allie's daughter, a ballet dancer paired with AJ Connelly in the next release.</div><span class="bk">BAD IDEA '26</span></div></div>
+                  <div class="child"><div class="branch"></div><div data-id="kate" class="card gen2"><div class="nm">Kate Di Laurentis</div><div class="role">Youngest daughter</div><span class="tbd">No book yet</span></div></div>
+                </div>
+              </div>
+              <div class="child">
+                <div class="couple-row">
+                  <div data-id="summer" class="card protag"><div class="nm">Summer Heyward-Di Laurentis</div><div class="role">Dean's sister</div><div class="bio">Dean's sharp-tongued younger sister, transferring to Briar with her guard fully up.</div><span class="bk">THE CHASE</span></div>
+                  <div class="ring">&#8734;</div>
+                  <div data-id="fitzy" class="card protag"><div class="nm">Colin "Fitzy" Fitzgerald</div><div class="role">Hockey player</div><div class="bio">Golden-boy hockey player with a wandering eye, finally meets someone immune to his charm.</div><span class="bk">THE CHASE</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:6px;font-size:12px;color:#9aa5b6;">Ivy is paired with <b style="color:var(--gold-2)">AJ Connelly</b> (Jake &amp; Brenna's son) in the upcoming <i>Bad Idea</i>, Nov 2026</div>
+        </div>
+      </div>
+
+      <!-- TUCKER -->
+      <div class="family-block">
+        <p class="family-name">The Tuckers <small>Off-Campus</small></p>
+        <div class="tree">
+          <div class="gen0">John Tucker Sr. &amp; Gail Tucker</div>
+          <div class="trunk"></div>
+          <div class="couple-row">
+            <div data-id="tucker" class="card protag"><div class="nm">John Tucker</div><div class="role">Hockey player</div><div class="bio">Reputation as Briar's resident man-whore, undone by one woman who won't play along.</div><span class="bk">THE GOAL</span></div>
+            <div class="ring">&#8734;</div>
+            <div data-id="sabrina" class="card protag"><div class="nm">Sabrina James</div><div class="role">Journalist</div><div class="bio">Campus paper's sex columnist, allergic to relationships &mdash; meets her match in Tucker.</div><span class="bk">THE GOAL</span></div>
+          </div>
+          <div class="children-wrap">
+            <div class="children">
+              <div class="child"><div class="branch"></div><div data-id="jamie" class="card gen2"><div class="nm">Jamie Tucker</div><div class="role">Daughter</div><span class="tbd">No book yet</span></div></div>
+              <div class="child"><div class="branch"></div><div data-id="alexandra" class="card gen2"><div class="nm">Alexandra Tucker</div><div class="role">Daughter</div><span class="tbd">No book yet</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONNELLY (Briar U, not in original wiki family tree but relevant for Bad Idea) -->
+      <div class="family-block">
+        <p class="family-name">The Connellys <small>Briar U &rarr; Campus Diaries</small></p>
+        <div class="tree">
+          <div class="gen0" style="border-color:transparent;">Introduced in Briar U (no parents shown on-page)</div>
+          <div class="couple-row">
+            <div data-id="jakec" class="card protag"><div class="nm">Jake Connelly</div><div class="role">Hockey player</div><div class="bio">New team captain with a rough past and zero interest in his coach's daughter &mdash; at first.</div><span class="bk">THE RISK</span></div>
+            <div class="ring">&#8734;</div>
+            <div data-id="brenna" class="card protag"><div class="nm">Brenna Jensen</div><div class="role">Head coach's daughter</div><div class="bio">Head coach's daughter and hockey obsessive, determined to prove herself on her own terms.</div><span class="bk">THE RISK</span></div>
+          </div>
+          <div class="children-wrap">
+            <div class="children">
+              <div class="child"><div class="branch"></div><div data-id="aj" class="card protag gen2"><div class="nm">AJ Connelly</div><div class="role">Son &middot; hockey</div><div class="bio">Jake &amp; Brenna's son, paired with Ivy Di Laurentis in the upcoming <em>Bad Idea</em>.</div><span class="bk">BAD IDEA '26</span></div></div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:6px;font-size:12px;color:#9aa5b6;">Brenna Jensen is also Chad Jensen's daughter &mdash; Briar's head hockey coach &mdash; and Summer's best friend</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================= FRIEND GROUPS ======================= -->
+  <section class="view" id="friends">
+    <div class="view-head">
+      <h2>Three Friend Groups, One Locker Room</h2>
+      <p>Each series centers a different friend circle at Briar University. Many characters cross over &mdash; mentoring, rooming with, or dating into the next crew.</p>
+    </div>
+    <div class="legend">
+      <span><i class="swatch" style="background:var(--cream); border:1.5px solid var(--maroon-2)"></i> Hockey team / guys</span>
+      <span><i class="swatch" style="background:var(--cream); border:1.5px solid var(--ice)"></i> Girlfriends / friend group</span>
+      <span><i class="swatch" style="background:var(--cream); border:1.5px solid var(--gold)"></i> Next-gen crew</span>
+    </div>
+
+    <div class="friend-groups">
+
+      <div class="fg">
+        <div class="fg-title"><h3>The Original Four &mdash; Off-Campus</h3><span>Seniors &middot; est. mid-2010s</span></div>
+        <p class="fg-note">Four best friends and hockey teammates who anchor the original series, each getting their own book. Their girlfriends form a tight, overlapping friend group of their own.</p>
+        <div class="cluster">
+          <div class="bubble hockey">Garrett Graham <small>The Deal</small></div>
+          <div class="bubble hockey">John "Logan" Logan <small>The Mistake</small></div>
+          <div class="bubble hockey">Dean Heyward-Di Laurentis <small>The Score</small></div>
+          <div class="bubble hockey">John Tucker <small>The Goal</small></div>
+          <div class="bubble girls">Hannah Wells</div>
+          <div class="bubble girls">Grace Ivers</div>
+          <div class="bubble girls">Allie Hayes</div>
+          <div class="bubble girls">Sabrina James</div>
+        </div>
+        <div class="link-note"><b>The Legacy</b> reunites all four couples three years after graduation &mdash; a proposal, an elopement, and a surprise pregnancy round out their story.</div>
+      </div>
+
+      <div class="fg">
+        <div class="fg-title"><h3>The Next Wave &mdash; Briar U</h3><span>Underclassmen who step up &middot; shortly after Off-Campus</span></div>
+        <p class="fg-note">Characters who were minor players or underclassmen in Off-Campus take the lead once the original four graduate. Dean personally mentored Hunter on the ice; Brenna is Summer's best friend.</p>
+        <div class="cluster">
+          <div class="bubble hockey">Colin "Fitzy" Fitzgerald <small>The Chase</small></div>
+          <div class="bubble hockey">Jake Connelly <small>The Risk</small></div>
+          <div class="bubble hockey">Hunter Davenport <small>The Play</small></div>
+          <div class="bubble hockey">Conor Edwards <small>The Dare</small></div>
+          <div class="bubble girls">Summer Heyward-Di Laurentis <small>Dean's sister</small></div>
+          <div class="bubble girls">Brenna Jensen <small>Coach's daughter</small></div>
+          <div class="bubble girls">Demi Davis</div>
+          <div class="bubble girls">Taylor Marsh</div>
+        </div>
+        <div class="link-note"><b>Crossover:</b> Dean Heyward-Di Laurentis mentored <b>Hunter Davenport</b> as a teammate-turned-captain. <b>Summer</b> is Dean's younger sister; <b>Brenna</b>'s father Chad Jensen coaches the team.</div>
+      </div>
+
+      <div class="fg">
+        <div class="fg-title"><h3>The Next Generation &mdash; Campus Diaries</h3><span>Their kids at Briar U &middot; ~20 years later</span></div>
+        <p class="fg-note">The children of the original casts grow up together as the new Briar U hockey &amp; social crew, with a few new campus faces joining their orbit.</p>
+        <div class="cluster">
+          <div class="bubble nextgen">Gigi Graham <small>Garrett &amp; Hannah's daughter</small></div>
+          <div class="bubble nextgen">Wyatt Graham <small>Garrett &amp; Hannah's son</small></div>
+          <div class="bubble nextgen">Blake Logan <small>Logan &amp; Grace's son</small></div>
+          <div class="bubble nextgen">Beau Di Laurentis <small>Dean &amp; Allie's son</small></div>
+          <div class="bubble nextgen">Ivy Di Laurentis <small>Dean &amp; Allie's daughter</small></div>
+          <div class="bubble nextgen">Kate Di Laurentis <small>Dean &amp; Allie's daughter</small></div>
+          <div class="bubble nextgen">AJ Connelly <small>Jake &amp; Brenna's son</small></div>
+          <div class="bubble hockey">Luke Ryder <small>Gigi's love interest</small></div>
+          <div class="bubble girls">Diana Dixon <small>The Dixon Rule</small></div>
+          <div class="bubble hockey">Shane Lindley <small>The Dixon Rule</small></div>
+          <div class="bubble girls">Charlotte "Charlie" Kingston <small>The Charlie Method</small></div>
+          <div class="bubble hockey">Will Larsen <small>The Charlie Method</small></div>
+          <div class="bubble hockey">Beckett Dunne <small>The Charlie Method</small></div>
+        </div>
+        <div class="link-note">Will Larsen and Beckett Dunne are best friends &amp; teammates first introduced in <b>The Graham Effect</b>; both end up in a polyamorous relationship with Charlie in <b>The Charlie Method</b>.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================= CONNECTIONS MAP ======================= -->
+  <section class="view" id="map">
+    <div class="view-head">
+      <h2>The Whole Web, One Map</h2>
+      <p>Every named character above, plotted by generation with every connection drawn: family lines, romances, and friend circles. Scroll sideways &mdash; it's wide. Click any node to highlight just its direct connections.</p>
+    </div>
+    <div class="legend" id="map-legend">
+      <span><i class="swatch" style="background:var(--gold-2)"></i> Family (parent&rarr;child / sibling)</span>
+      <span><i class="swatch" style="background:var(--maroon-2)"></i> Romantic couple</span>
+      <span><i class="swatch" style="background:var(--ice)"></i> Friend group</span>
+      <span><i class="swatch" style="background:#c58fd6"></i> Poly relationship</span>
+      <span><i class="swatch" style="background:#8a95a8"></i> Mentor</span>
+      <span><i class="swatch" style="background:repeating-linear-gradient(135deg, #5b5142, #5b5142 3px, #6b6047 3px, #6b6047 6px); border:1px solid var(--line);"></i> Not part of Briar University</span>
+    </div>
+    <div class="map-scroll">
+      <div class="map-canvas" id="map-canvas">
+        <svg id="map-svg"></svg>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#8a95a8;max-width:640px;margin:14px 0 0;">Layout is grouped by generation (top: parents &middot; middle: Off-Campus &amp; Briar U &middot; bottom: Campus Diaries) and is illustrative, not to scale.</p>
+  </section>
+
+  <!-- ======================= BOOK GUIDE ======================= -->
+  <section class="view" id="books">
+    <div class="view-head">
+      <h2>Every Book, Who It's About</h2>
+      <p>All three series in publication order, grouped by generation.</p>
+    </div>
+
+    <div class="series-block">
+      <div class="series-head">
+        <h3>Off&#8209;Campus</h3><span class="tag">5 books</span>
+        <p>The original series. Follows four hockey-playing best friends at Briar University &mdash; each book centers a different couple from the same intertwined friend group.</p>
+      </div>
+      <div class="book-row">
+        <div class="book"><div class="num">BOOK 1</div><div class="title">The Deal</div><div class="couple">Garrett Graham &amp; Hannah Wells</div><div class="yr">Freshman/Senior year</div></div>
+        <div class="book"><div class="num">BOOK 2</div><div class="title">The Mistake</div><div class="couple">John Logan &amp; Grace Ivers</div><div class="yr">Same era</div></div>
+        <div class="book"><div class="num">BOOK 3</div><div class="title">The Score</div><div class="couple">Dean Heyward-Di Laurentis &amp; Allie Hayes</div><div class="yr">Same era</div></div>
+        <div class="book"><div class="num">BOOK 4</div><div class="title">The Goal</div><div class="couple">John Tucker &amp; Sabrina James</div><div class="yr">Same era</div></div>
+        <div class="book"><div class="num">BOOK 5</div><div class="title">The Legacy</div><div class="couple">All four couples (4 novellas)</div><div class="yr">+3 years post-grad</div></div>
+      </div>
+    </div>
+
+    <div class="series-block">
+      <div class="series-head">
+        <h3>Briar U</h3><span class="tag">4 books</span>
+        <p>Spin-off following characters who were side characters or underclassmen in Off-Campus, once the original four hockey guys graduate.</p>
+      </div>
+      <div class="book-row">
+        <div class="book"><div class="num">BOOK 1</div><div class="title">The Chase</div><div class="couple">Colin "Fitzy" Fitzgerald &amp; Summer Heyward-Di Laurentis</div><div class="yr">Shortly after Off-Campus</div></div>
+        <div class="book"><div class="num">BOOK 2</div><div class="title">The Risk</div><div class="couple">Jake Connelly &amp; Brenna Jensen</div><div class="yr">Same era</div></div>
+        <div class="book"><div class="num">BOOK 3</div><div class="title">The Play</div><div class="couple">Hunter Davenport &amp; Demi Davis</div><div class="yr">Same era</div></div>
+        <div class="book"><div class="num">BOOK 4</div><div class="title">The Dare</div><div class="couple">Conor Edwards &amp; Taylor Marsh</div><div class="yr">Same era</div></div>
+      </div>
+    </div>
+
+    <div class="series-block">
+      <div class="series-head">
+        <h3>Campus Diaries</h3><span class="tag">5 books</span>
+        <p>The next generation &mdash; children of the original Off-Campus &amp; Briar U casts, now students (and hockey players) at Briar U themselves.</p>
+      </div>
+      <div class="book-row">
+        <div class="book gen2"><div class="num">BOOK 1</div><div class="title">The Graham Effect</div><div class="couple">Luke Ryder &amp; Gigi Graham</div><div class="yr">~20 yrs after Off-Campus</div></div>
+        <div class="book gen2"><div class="num">BOOK 2</div><div class="title">The Dixon Rule</div><div class="couple">Shane Lindley &amp; Diana Dixon</div><div class="yr">Same era</div></div>
+        <div class="book gen2"><div class="num">BOOK 3</div><div class="title">The Charlie Method</div><div class="couple">Charlie Kingston, Will Larsen &amp; Beckett Dunne</div><div class="yr">Overlaps The Dixon Rule</div></div>
+        <div class="book gen2"><div class="num">BOOK 4</div><div class="title">Love Song</div><div class="couple">Wyatt Graham &amp; Blake Logan</div><div class="yr">Same era</div></div>
+        <div class="book upcoming gen2"><div class="num">BOOK 5 &middot; UPCOMING</div><div class="title">Bad Idea</div><div class="couple">Ivy Di Laurentis &amp; AJ Connelly</div><div class="yr">Nov 3, 2026</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= TIMELINE ======================= -->
+  <section class="view" id="timeline">
+    <div class="view-head">
+      <h2>Reading &amp; In-Universe Timeline</h2>
+      <p>Recommended order: Off-Campus &rarr; Briar U &rarr; Campus Diaries, which also mirrors the in-universe generations.</p>
+    </div>
+
+    <div class="timeline-wrap">
+
+      <div class="tl-era">
+        <div class="tl-dot"></div>
+        <h3>Gen 1 &middot; Off-Campus</h3>
+        <div class="when">College years &middot; first published 2015</div>
+        <div class="tl-books">
+          <div class="tl-book"><span class="idx">1</span><div class="info"><b>The Deal</b> &mdash; Garrett &amp; Hannah<span>Introduces the whole Briar U world</span></div></div>
+          <div class="tl-book"><span class="idx">2</span><div class="info"><b>The Mistake</b> &mdash; Logan &amp; Grace</div></div>
+          <div class="tl-book"><span class="idx">3</span><div class="info"><b>The Score</b> &mdash; Dean &amp; Allie</div></div>
+          <div class="tl-book"><span class="idx">4</span><div class="info"><b>The Goal</b> &mdash; Tucker &amp; Sabrina</div></div>
+          <div class="tl-book"><span class="idx">5</span><div class="info"><b>The Legacy</b> &mdash; all four couples<span>Set 3 years after graduation</span></div></div>
+        </div>
+      </div>
+
+      <div class="tl-era">
+        <div class="tl-dot" style="background:var(--maroon-2);"></div>
+        <h3>Gen 1.5 &middot; Briar U</h3>
+        <div class="when">Shortly after Off-Campus, once the original four graduate</div>
+        <div class="tl-books">
+          <div class="tl-book"><span class="idx">1</span><div class="info"><b>The Chase</b> &mdash; Fitzy &amp; Summer<span>Summer is Dean's younger sister</span></div></div>
+          <div class="tl-book"><span class="idx">2</span><div class="info"><b>The Risk</b> &mdash; Jake Connelly &amp; Brenna</div></div>
+          <div class="tl-book"><span class="idx">3</span><div class="info"><b>The Play</b> &mdash; Hunter &amp; Demi<span>Hunter was mentored by Dean</span></div></div>
+          <div class="tl-book"><span class="idx">4</span><div class="info"><b>The Dare</b> &mdash; Conor &amp; Taylor</div></div>
+        </div>
+      </div>
+
+      <div class="tl-era gen2">
+        <div class="tl-dot" style="background:var(--ice);"></div>
+        <h3>Gen 2 &middot; Campus Diaries</h3>
+        <div class="when">~20 years later &mdash; the kids' turn at Briar U</div>
+        <div class="tl-books">
+          <div class="tl-book"><span class="idx">1</span><div class="info"><b>The Graham Effect</b> &mdash; Luke Ryder &amp; Gigi Graham<span>Gigi is Garrett &amp; Hannah's daughter</span></div></div>
+          <div class="tl-book"><span class="idx">2</span><div class="info"><b>The Dixon Rule</b> &mdash; Shane &amp; Diana</div></div>
+          <div class="tl-book"><span class="idx">3</span><div class="info"><b>The Charlie Method</b> &mdash; Charlie, Will &amp; Beckett<span>Overlaps events of The Dixon Rule</span></div></div>
+          <div class="tl-book"><span class="idx">4</span><div class="info"><b>Love Song</b> &mdash; Wyatt Graham &amp; Blake Logan<span>Sons of Garrett/Hannah and Logan/Grace</span></div></div>
+          <div class="tl-book"><span class="idx">5</span><div class="info"><b>Bad Idea</b> &mdash; Ivy Di Laurentis &amp; AJ Connelly<span>Upcoming &middot; Nov 3, 2026</span></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>Fan-made reference, built from published book synopses &amp; the Off-Campus Wiki family tree &middot; not affiliated with Elle Kennedy or her publishers.</footer>
+
+<script>
+  const buttons = document.querySelectorAll('nav.tabs button');
+  const views = document.querySelectorAll('section.view');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      views.forEach(v=>v.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.view).classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+      if(btn.dataset.view === 'map'){ renderMap(); }
+      if(typeof performSearch === 'function'){ performSearch(); }
+    });
+  });
+</script>
+
+<script>
+/* ===================== CONNECTIONS MAP DATA ===================== */
+const nodes = [
+  // ---- Gen 0 (parents) — not Briar University ----
+  {id:'g0g', x:150,  y:40,  name:'Phil & Mrs. Graham', gen:'gen0', notBriar:true},
+  {id:'g0l', x:430,  y:40,  name:'Ward & Jean Logan', gen:'gen0', notBriar:true},
+  {id:'g0d', x:890,  y:40,  name:'Peter Di Laurentis & Lori Heyward', gen:'gen0', notBriar:true},
+  {id:'g0t', x:1090, y:40,  name:'John Tucker Sr. & Gail', gen:'gen0', notBriar:true},
+  {id:'jeffrey', x:290, y:150, name:'Jeffrey Logan', gen:'gen0', notBriar:true},
+  {id:'nick',    x:990, y:150, name:'Nick Heyward-Di Laurentis', gen:'gen0', notBriar:true},
+
+  // ---- Gen 1 guys: Off-Campus + Briar U ----
+  {id:'garrett', x:150,  y:270, name:'Garrett Graham', book:'The Deal', gen:'gen1'},
+  {id:'logan',   x:430,  y:270, name:'John "Logan" Logan', book:'The Mistake', gen:'gen1'},
+  {id:'dean',    x:710,  y:270, name:'Dean Heyward-Di Laurentis', book:'The Score', gen:'gen1'},
+  {id:'tucker',  x:990,  y:270, name:'John Tucker', book:'The Goal', gen:'gen1'},
+  {id:'fitzy',   x:1270, y:270, name:'Colin "Fitzy" Fitzgerald', book:'The Chase', gen:'gen1'},
+  {id:'jakec',   x:1550, y:270, name:'Jake Connelly', book:'The Risk', gen:'gen1'},
+  {id:'hunter',  x:1830, y:270, name:'Hunter Davenport', book:'The Play', gen:'gen1'},
+  {id:'conor',   x:2110, y:270, name:'Conor Edwards', book:'The Dare', gen:'gen1'},
+
+  // ---- Gen 1 girls ----
+  {id:'hannah',  x:150,  y:420, name:'Hannah Wells', book:'The Deal', gen:'gen1'},
+  {id:'grace',   x:430,  y:420, name:'Grace Ivers', book:'The Mistake', gen:'gen1'},
+  {id:'allie',   x:710,  y:420, name:'Allie Hayes', book:'The Score', gen:'gen1'},
+  {id:'sabrina', x:990,  y:420, name:'Sabrina James', book:'The Goal', gen:'gen1'},
+  {id:'summer',  x:1270, y:420, name:'Summer Heyward-Di Laurentis', book:'The Chase', gen:'gen1'},
+  {id:'brenna',  x:1550, y:420, name:'Brenna Jensen', book:'The Risk', gen:'gen1'},
+  {id:'demi',    x:1830, y:420, name:'Demi Davis', book:'The Play', gen:'gen1'},
+  {id:'taylor',  x:2110, y:420, name:'Taylor Marsh', book:'The Dare', gen:'gen1'},
+
+  // ---- Gen 2: Campus Diaries kids ----
+  {id:'wyatt',  x:100,  y:660, name:'Wyatt Graham', book:'Love Song', gen:'gen2'},
+  {id:'gigi',   x:230,  y:660, name:'Gigi Graham', book:'Graham Effect', gen:'gen2'},
+  {id:'luke',   x:360,  y:660, name:'Luke Ryder', book:'Graham Effect', gen:'gen2'},
+  {id:'blake',  x:560,  y:660, name:'Blake Logan', book:'Love Song', gen:'gen2'},
+  {id:'beau',   x:760,  y:660, name:'Beau Di Laurentis', book:'—', gen:'gen2'},
+  {id:'ivy',    x:900,  y:660, name:'Ivy Di Laurentis', book:"Bad Idea '26", gen:'gen2'},
+  {id:'kate',   x:1040, y:660, name:'Kate Di Laurentis', book:'—', gen:'gen2'},
+  {id:'aj',     x:1550, y:660, name:'AJ Connelly', book:"Bad Idea '26", gen:'gen2'},
+  {id:'jamie',  x:1720, y:660, name:'Jamie Tucker', gen:'gen2', notBriar:true},
+  {id:'alexandra', x:1720, y:770, name:'Alexandra Tucker', gen:'gen2', notBriar:true},
+
+  // ---- Gen 2: new campus faces ----
+  {id:'diana',   x:1780, y:850, name:'Diana Dixon', book:'Dixon Rule', gen:'gen2'},
+  {id:'shane',   x:1910, y:850, name:'Shane Lindley', book:'Dixon Rule', gen:'gen2'},
+  {id:'charlie', x:2060, y:850, name:'Charlotte "Charlie" Kingston', book:'Charlie Method', gen:'gen2'},
+  {id:'will',    x:2200, y:750, name:'Will Larsen', book:'Charlie Method', gen:'gen2'},
+  {id:'beckett', x:2200, y:930, name:'Beckett Dunne', book:'Charlie Method', gen:'gen2'},
+];
+
+const COLORS = { family:'#e4c877', romance:'#9c3d3d', friend:'#8fb8c9', poly:'#c58fd6', mentor:'#8a95a8' };
+
+const edges = [
+  // family
+  ['g0g','garrett','family'], ['g0l','logan','family'], ['g0d','dean','family'], ['g0d','summer','family'], ['g0t','tucker','family'],
+  ['garrett','wyatt','family'], ['garrett','gigi','family'], ['logan','blake','family'],
+  ['dean','beau','family'], ['dean','ivy','family'], ['dean','kate','family'], ['jakec','aj','family'],
+  ['g0l','jeffrey','family'], ['g0d','nick','family'], ['tucker','jamie','family'], ['tucker','alexandra','family'],
+  // romance
+  ['garrett','hannah','romance'], ['logan','grace','romance'], ['dean','allie','romance'], ['tucker','sabrina','romance'],
+  ['fitzy','summer','romance'], ['jakec','brenna','romance'], ['hunter','demi','romance'], ['conor','taylor','romance'],
+  ['gigi','luke','romance'], ['diana','shane','romance'],
+  // friend — OG guys mesh
+  ['garrett','logan','friend'], ['garrett','dean','friend'], ['garrett','tucker','friend'],
+  ['logan','dean','friend'], ['logan','tucker','friend'], ['dean','tucker','friend'],
+  // friend — OG girls mesh
+  ['hannah','grace','friend'], ['hannah','allie','friend'], ['hannah','sabrina','friend'],
+  ['grace','allie','friend'], ['grace','sabrina','friend'], ['allie','sabrina','friend'],
+  // friend — Briar U guys mesh
+  ['fitzy','jakec','friend'], ['fitzy','hunter','friend'], ['fitzy','conor','friend'],
+  ['jakec','hunter','friend'], ['jakec','conor','friend'], ['hunter','conor','friend'],
+  // friend — Briar U girls mesh
+  ['summer','brenna','friend'], ['summer','demi','friend'], ['summer','taylor','friend'],
+  ['brenna','demi','friend'], ['brenna','taylor','friend'], ['demi','taylor','friend'],
+  // friend — next-gen chain
+  ['wyatt','gigi','friend'], ['gigi','blake','friend'], ['blake','beau','friend'],
+  ['beau','ivy','friend'], ['ivy','kate','friend'], ['kate','aj','friend'],
+  // friend — new faces
+  ['luke','will','friend'], ['luke','beckett','friend'], ['will','beckett','friend'],
+  // mentor
+  ['dean','hunter','mentor'],
+  // poly
+  ['charlie','will','poly'], ['charlie','beckett','poly'],
+];
+
+let mapBuilt = false;
+function renderMap(){
+  if(mapBuilt) return;
+  mapBuilt = true;
+  const canvas = document.getElementById('map-canvas');
+  const svg = document.getElementById('map-svg');
+  svg.setAttribute('viewBox','0 0 2260 980');
+
+  const byId = {};
+  nodes.forEach(n => byId[n.id] = n);
+
+  // draw edges
+  edges.forEach(([a,b,type])=>{
+    const na = byId[a], nb = byId[b];
+    if(!na || !nb) return;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', na.x); line.setAttribute('y1', na.y);
+    line.setAttribute('x2', nb.x); line.setAttribute('y2', nb.y);
+    line.setAttribute('stroke', COLORS[type]);
+    line.setAttribute('stroke-width', type==='romance' ? 2.4 : type==='family' ? 2.2 : 1.4);
+    if(type==='friend' || type==='mentor' || type==='poly'){ line.setAttribute('stroke-dasharray','5,5'); }
+    line.classList.add('edge');
+    line.dataset.a = a; line.dataset.b = b;
+    svg.appendChild(line);
+  });
+
+  // draw nodes
+  nodes.forEach(n=>{
+    const div = document.createElement('div');
+    div.className = 'node ' + n.gen + (n.notBriar ? ' notbriar' : '');
+    div.style.left = n.x + 'px';
+    div.style.top = n.y + 'px';
+    div.dataset.id = n.id;
+    let inner = `<div class="n-name">${n.name}</div>`;
+    if(n.book && n.book !== '—'){ inner += `<div class="n-book">${n.book}</div>`; }
+    if(n.notBriar){ inner += `<div class="n-flag">Not Briar U</div>`; }
+    div.innerHTML = inner;
+    div.addEventListener('click', ()=> focusNode(n.id));
+    canvas.appendChild(div);
+  });
+
+  canvas.addEventListener('click', (e)=>{
+    if(e.target === canvas || e.target === svg){ clearFocus(); }
+  });
+}
+
+function clearFocus(){
+  document.querySelectorAll('.node').forEach(el=> el.classList.remove('dim','lit'));
+  document.querySelectorAll('.edge').forEach(el=> el.classList.remove('dim','lit'));
+}
+
+function focusNode(id){
+  const connected = new Set([id]);
+  const litEdges = [];
+  edges.forEach(([a,b])=>{
+    if(a===id) { connected.add(b); }
+    if(b===id) { connected.add(a); }
+  });
+  document.querySelectorAll('.node').forEach(el=>{
+    const nid = el.dataset.id;
+    el.classList.remove('dim','lit');
+    if(!nid) return;
+    if(connected.has(nid)){ el.classList.add('lit'); }
+    else { el.classList.add('dim'); }
+  });
+  document.querySelectorAll('.edge').forEach(el=>{
+    el.classList.remove('dim','lit');
+    if(el.dataset.a === id || el.dataset.b === id){ el.classList.add('lit'); }
+    else { el.classList.add('dim'); }
+  });
+}
+
+/* ===================== FAMILY TREE CLICK-TO-FOCUS ===================== */
+let familyFocused = null;
+
+function familyFocus(id){
+  const connected = new Set([id]);
+  edges.forEach(([a,b])=>{
+    if(a===id) connected.add(b);
+    if(b===id) connected.add(a);
+  });
+  document.querySelectorAll('.family-block .card[data-id]').forEach(el=>{
+    const cid = el.dataset.id;
+    el.classList.remove('dim','lit');
+    if(connected.has(cid)){ el.classList.add('lit'); }
+    else { el.classList.add('dim'); }
+  });
+}
+function clearFamilyFocus(){
+  document.querySelectorAll('.family-block .card[data-id]').forEach(el=> el.classList.remove('dim','lit'));
+  familyFocused = null;
+}
+document.querySelectorAll('.family-block .card[data-id]').forEach(card=>{
+  card.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const id = card.dataset.id;
+    if(familyFocused === id){ clearFamilyFocus(); }
+    else { familyFocus(id); familyFocused = id; }
+  });
+});
+document.getElementById('families').addEventListener('click', clearFamilyFocus);
+
+/* ===================== GLOBAL SEARCH ===================== */
+const searchInput = document.getElementById('global-search');
+function performSearch(){
+  const q = searchInput.value.trim().toLowerCase();
+  const targets = document.querySelectorAll('.family-block .card[data-id], .friend-groups .bubble, .node');
+  if(!q){
+    targets.forEach(el=> el.classList.remove('dim','lit'));
+    return;
+  }
+  targets.forEach(el=>{
+    const text = el.textContent.toLowerCase();
+    el.classList.remove('dim','lit');
+    if(text.includes(q)){ el.classList.add('lit'); }
+    else { el.classList.add('dim'); }
+  });
+}
+searchInput.addEventListener('input', performSearch);
+searchInput.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape'){ searchInput.value=''; performSearch(); searchInput.blur(); }
+});
+
+/* ===================== SPOILER TOGGLE ===================== */
+document.getElementById('spoiler-toggle').addEventListener('change', (e)=>{
+  document.body.classList.toggle('hide-spoilers', e.target.checked);
+});
+</script>
+
+</body>
+</html>
