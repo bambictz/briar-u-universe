@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Briar U Universe Reading Order Poster</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: one control bar over a scaled preview of the poster canvas. The poster itself is a fixed navy
+   rink design (it's an image to share), while the page chrome follows the viewer's theme. */
+:root{--bg:#0e1b2c;--surface:#16263c;--fg:#f3ede0;--muted:#a9b3c4;--line:rgba(243,237,224,.16);--accent:#c9a24b;--accent-ink:#0e1b2c;
+ --display:"Fraunces",Georgia,serif;--body:"Public Sans",system-ui,sans-serif;--mono:"Public Sans",system-ui,sans-serif;color-scheme:dark}
+body{background:radial-gradient(1200px 700px at 15% -10%,#1a2c46 0%,transparent 60%),radial-gradient(1000px 600px at 110% 10%,#24140f 0%,transparent 55%),#0e1b2c!important}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e1b2c;--surface:#16263c;--fg:#f3ede0;--muted:#a9b3c4;--line:#2b3f5c;--accent:#e4c877;--accent-ink:#0e1b2c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1b2c;--surface:#16263c;--fg:#f3ede0;--muted:#a9b3c4;--line:#2b3f5c;--accent:#e4c877;--accent-ink:#0e1b2c;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 var(--body)}
+.wrap{max-width:900px;margin:0 auto;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--display);font-weight:600;font-size:2rem;margin:0;line-height:1.1}
+.eyebrow{font-family:var(--mono);font-weight:700;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:#e4c877;margin:0}
+p.lede{color:var(--muted);margin:6px 0 16px;max-width:65ch}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.chip{font:inherit;font-size:.92rem;padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--fg);cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn{font:inherit;font-weight:600;padding:10px 16px;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);cursor:pointer;min-height:44px}
+.btn[disabled]{opacity:.5;cursor:wait}
+.sp{flex:1}
+.status{font-size:.9rem;color:var(--muted);min-height:1.4em;margin:0 0 10px}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px}
+canvas{display:block;width:100%;height:auto;border-radius:6px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">The Reader's Atlas · Briar U Universe</p>
+  <h1>Reading Order Poster</h1>
+  <p class="lede">The Off-Campus, Briar U and Campus Diaries reading order with book covers from Open Library. Pick a series, wait for the covers to load, then download the PNG. <a href="./">Back to the guide</a></p>
+  <div class="controls" role="group" aria-label="Choose series">
+    <button class="chip" data-s="all" aria-pressed="true">All series</button>
+    <button class="chip" data-s="oc" aria-pressed="false">Off-Campus</button>
+    <button class="chip" data-s="bu" aria-pressed="false">Briar U</button>
+    <button class="chip" data-s="cd" aria-pressed="false">Campus Diaries</button>
+    <span class="sp"></span>
+    <button class="btn" id="dl" disabled>Download PNG</button>
+  </div>
+  <p class="status" id="status" role="status">Loading covers…</p>
+  <div class="stage"><canvas id="cv" aria-label="Briar U universe reading order poster"></canvas></div>
+</div>
+<script>
+const SER={oc:{name:"Off-Campus",short:"Off-Campus",col:"#e07a7a"},bu:{name:"Briar U",short:"Briar U",col:"#7fb6dd"},cd:{name:"Campus Diaries",short:"Campus Diaries",col:"#e4c877"}};
+const BOOKS=[["oc",1,"The Deal",2015,"9781775293934","#8c2f36"],["oc",2,"The Mistake",2015,"9781775293941","#6d2b3a"],["oc",3,"The Score",2016,"9781775293958","#3c4f7a"],["oc",4,"The Goal",2016,"9781775293965","#2f5a4a"],["bu",1,"The Chase",2018,"9781775293972","#2f6f9e"],["bu",2,"The Risk",2019,"9781775293989","#1e3e63"],["oc",5,"The Legacy",2019,"9781990101069","#7a5a2c"],["bu",3,"The Play",2019,"9781999549763","#3d5f86"],["bu",4,"The Dare",2020,"9781777112134","#4a6fa5"],["cd",1,"The Graham Effect",2023,"9781728283272","#a8791f"],["cd",2,"The Dixon Rule",2024,"9781728260723","#8a5a2b"],["cd",3,"The Charlie Method",2025,"9781464219351","#6a4f8a"],["cd",4,"Love Song",2026,"9781464241550","#9a3f5a"]].map(([s,n,t,y,isbn,col,id],i)=>({s,n,t,y,isbn,col,id,order:i+1}));
+const COMING=[["cd","Bad Idea","Mar 2027"]];
+
+/* Load each cover with CORS so the canvas can be exported. Try ISBN, then cover ID; null means draw a spine. */
+const loadImg=src=>new Promise(res=>{const i=new Image();i.crossOrigin="anonymous";i.onload=()=>res(i.naturalWidth>10?i:null);i.onerror=()=>res(null);i.src=src});
+const covers={};
+async function loadCovers(){
+ let done=0;const st=document.getElementById("status");
+ await Promise.all(BOOKS.map(async b=>{
+  let img=await loadImg(`https://covers.openlibrary.org/b/isbn/${b.isbn}-L.jpg?default=false`);
+  if(!img&&b.id)img=await loadImg(`https://covers.openlibrary.org/b/id/${b.id}-L.jpg?default=false`);
+  covers[b.isbn]=img;done++;st.textContent=`Loading covers… ${done} of ${BOOKS.length}`;draw();
+ }));
+ const miss=BOOKS.filter(b=>!covers[b.isbn]).map(b=>b.t);
+ st.textContent=miss.length?`Ready. ${miss.length} cover${miss.length>1?"s":""} not found, shown as a coloured spine: ${miss.join(", ")}.`:"Ready. All covers loaded.";
+ document.getElementById("dl").disabled=false;
+}
+
+/* ---- drawing ---- */
+const W=1500,M=70,COLS=5,GAP=34,CW=(W-2*M-(COLS-1)*GAP)/COLS,CH=CW*1.5,TXT=104,RGAP=40,HEAD=300,FOOT=130;
+let sel=new URLSearchParams(location.search).get("s");if(!SER[sel])sel="all";
+const cv=document.getElementById("cv"),ctx=cv.getContext("2d");
+const F={mark:'"Public Sans", system-ui, sans-serif',disp:'"Fraunces", Georgia, serif',body:'"Public Sans", system-ui, sans-serif'};
+function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function wrap(text,maxW,font){ctx.font=font;const words=text.split(" ");const lines=[];let cur="";for(const w of words){const t=cur?cur+" "+w:w;if(ctx.measureText(t).width>maxW&&cur){lines.push(cur);cur=w}else cur=t}if(cur)lines.push(cur);
+ if(lines.length>2){lines.length=2;let l=lines[1];while(ctx.measureText(l+"…").width>maxW&&l.length)l=l.slice(0,-1);lines[1]=l+"…"}return lines}
+function shade(hex,p){const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;const f=v=>Math.max(0,Math.min(255,Math.round(v+(p<0?v*p:(255-v)*p))));return"#"+[f(r),f(g),f(b)].map(v=>v.toString(16).padStart(2,"0")).join("")}
+function spine(x,y,w,h,col,label){const g=ctx.createLinearGradient(x,y,x+w,y);g.addColorStop(0,col);g.addColorStop(1,shade(col,-.25));rr(x,y,w,h,8);ctx.fillStyle=g;ctx.fill();
+ ctx.save();ctx.translate(x+w/2,y+h/2);ctx.rotate(-Math.PI/2);ctx.fillStyle="rgba(255,255,255,.92)";ctx.font=`700 24px ${F.mark}`;ctx.textAlign="center";ctx.textBaseline="middle";
+ const ws=wrap(label.toUpperCase(),h-60,ctx.font);ws.forEach((l,i)=>ctx.fillText(l,0,(i-(ws.length-1)/2)*34));ctx.restore()}
+function draw(){
+ const list=BOOKS.filter(b=>sel==="all"||b.s===sel),up=COMING.filter(c=>sel==="all"||c[0]===sel);
+ const items=[...list.map(b=>({b})),...up.map(c=>({c}))];
+ const rows=Math.ceil(items.length/COLS),H=HEAD+rows*(CH+TXT)+(rows-1)*RGAP+FOOT;
+ cv.width=W;cv.height=H;
+ const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,"#1a2f4c");bg.addColorStop(.45,"#0e1b2c");bg.addColorStop(1,"#09121e");ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+ ctx.strokeStyle="rgba(143,184,201,.10)";ctx.lineWidth=6;ctx.beginPath();ctx.arc(W/2,150,190,0,7);ctx.stroke();ctx.beginPath();ctx.moveTo(0,150);ctx.lineTo(W,150);ctx.stroke();
+ ctx.fillStyle="#9c3d3d";ctx.fillRect(0,0,W/3,10);ctx.fillStyle="#2f6f9e";ctx.fillRect(W/3,0,W/3,10);ctx.fillStyle="#b8892a";ctx.fillRect(2*W/3,0,W/3+1,10);
+ ctx.textAlign="center";ctx.textBaseline="alphabetic";
+ ctx.fillStyle="#a9b3c4";ctx.font=`700 20px ${F.mark}`;ctx.fillText("THE READER'S ATLAS",W/2,86);
+ ctx.fillStyle="#f3ede0";ctx.font=`600 84px ${F.disp}`;ctx.fillText(sel==="all"?"The Briar U Universe":SER[sel].name,W/2,178);
+ ctx.fillStyle="#e4c877";ctx.font=`italic 500 40px ${F.disp}`;ctx.fillText(sel==="all"?"Reading order, all three series":"Reading order",W/2,228);
+ if(sel==="all"){ctx.font=`500 21px ${F.body}`;const keys=Object.values(SER);const widths=keys.map(k=>ctx.measureText(k.name).width+40);const total=widths.reduce((a,b)=>a+b,0)+(keys.length-1)*30;let x=W/2-total/2;
+  keys.forEach((k,i)=>{ctx.fillStyle=k.col;ctx.beginPath();ctx.arc(x+10,264,9,0,7);ctx.fill();ctx.fillStyle="#d8dde6";ctx.textAlign="left";ctx.fillText(k.name,x+28,271);x+=widths[i]+30});ctx.textAlign="center"}
+ items.forEach((it,i)=>{const r=Math.floor(i/COLS),c=i%COLS;const inRow=Math.min(COLS,items.length-r*COLS);const off=(COLS-inRow)*(CW+GAP)/2;
+  const x=M+off+c*(CW+GAP),y=HEAD+r*(CH+TXT+RGAP);
+  if(it.b){const b=it.b,img=covers[b.isbn],col=SER[b.s].col;
+   ctx.save();ctx.shadowColor="rgba(0,0,0,.55)";ctx.shadowBlur=28;ctx.shadowOffsetY=12;rr(x,y,CW,CH,8);ctx.fillStyle="#000";ctx.fill();ctx.restore();
+   if(img){ctx.save();rr(x,y,CW,CH,8);ctx.clip();const s=Math.max(CW/img.naturalWidth,CH/img.naturalHeight),dw=img.naturalWidth*s,dh=img.naturalHeight*s;ctx.drawImage(img,x+(CW-dw)/2,y+(CH-dh)/2,dw,dh);ctx.restore()}
+   else spine(x,y,CW,CH,b.col,b.t);
+   rr(x,y,CW,CH,8);ctx.strokeStyle="rgba(255,255,255,.12)";ctx.lineWidth=2;ctx.stroke();
+   ctx.beginPath();ctx.arc(x+8,y+8,30,0,7);ctx.fillStyle=col;ctx.fill();ctx.lineWidth=4;ctx.strokeStyle="#0e1b2c";ctx.stroke();
+   ctx.fillStyle="#0e1b2c";ctx.font=`700 24px ${F.mark}`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(sel==="all"?b.order:b.n),x+8,y+10);ctx.textBaseline="alphabetic";
+   const lines=wrap(b.t,CW,`600 28px ${F.disp}`);ctx.fillStyle="#f3ede0";lines.forEach((l,k)=>ctx.fillText(l,x+CW/2,y+CH+36+k*30));
+   ctx.fillStyle=col;ctx.font=`700 15px ${F.mark}`;ctx.fillText(`${SER[b.s].short.toUpperCase()} ${b.n} · ${b.y}`,x+CW/2,y+CH+36+lines.length*30+4);
+  } else {const [s,t,d]=it.c,col=SER[s].col;
+   rr(x,y,CW,CH,8);ctx.fillStyle="rgba(255,255,255,.04)";ctx.fill();ctx.setLineDash([12,10]);ctx.lineWidth=3;ctx.strokeStyle=col;ctx.stroke();ctx.setLineDash([]);
+   ctx.fillStyle=col;ctx.font=`700 20px ${F.mark}`;ctx.textAlign="center";ctx.fillText("COMING",x+CW/2,y+CH/2-8);ctx.fillStyle="#d8dde6";ctx.font=`italic 500 34px ${F.disp}`;ctx.fillText(d,x+CW/2,y+CH/2+34);
+   const lines=wrap(t,CW,`600 28px ${F.disp}`);ctx.fillStyle="#cfd6e2";lines.forEach((l,k)=>ctx.fillText(l,x+CW/2,y+CH+36+k*30));
+   ctx.fillStyle=col;ctx.font=`700 15px ${F.mark}`;ctx.fillText(SER[s].short.toUpperCase(),x+CW/2,y+CH+36+lines.length*30+4)}
+ });
+ ctx.textAlign="center";ctx.fillStyle="#a9b3c4";ctx.font=`700 20px ${F.mark}`;ctx.fillText("READERSATLAS.COM/BRIAR-U  ·  @READERS.ATLAS",W/2,H-70);
+ ctx.fillStyle="#7f8aa0";ctx.font=`400 18px ${F.body}`;ctx.fillText("Unofficial fan guide. Covers via Open Library. Not affiliated with Elle Kennedy, Bloom Books or Piatkus.",W/2,H-38);
+}
+document.querySelectorAll("[data-s]").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.s===sel);b.addEventListener("click",()=>{sel=b.dataset.s;document.querySelectorAll("[data-s]").forEach(x=>x.setAttribute("aria-pressed",x===b));draw()})});
+document.getElementById("dl").addEventListener("click",()=>{const st=document.getElementById("status");
+ try{cv.toBlob(bl=>{if(!bl){st.textContent="Couldn't create the PNG. Right-click (or long-press) the poster and save the image instead.";return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=`briar-u-reading-order${sel==="all"?"":"-"+sel}.png`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);st.textContent="Downloaded."},"image/png")}
+ catch(e){st.textContent="Couldn't create the PNG because a cover blocked export. Right-click (or long-press) the poster and save the image instead."}});
+(document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{draw();loadCovers()});
+draw();
+</script>
+</body>
+</html>
